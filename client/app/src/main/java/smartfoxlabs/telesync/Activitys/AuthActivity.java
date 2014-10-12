@@ -1,9 +1,11 @@
-package smartfoxlabs.telesync;
+package smartfoxlabs.telesync.Activitys;
 
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import smartfoxlabs.telesync.R;
 
 
 public class AuthActivity extends Activity {
