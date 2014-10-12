@@ -2,7 +2,8 @@
 <resources>
 
     <string name="app_name">TeleSync</string>
-    <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
-
+    <string name="notification_no_memory">Out of memory</string>
+    <string name="notification_error">Error</string>
+    <string name="notification_catalog_downloaded">Downloaded Succesfully</string>
 </resources>

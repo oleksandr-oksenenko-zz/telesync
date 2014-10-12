@@ -1,11 +1,13 @@
 package smartfoxlabs.telesync.Activitys;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import smartfoxlabs.telesync.R;
+import smartfoxlabs.telesync.Services.DownloadService;
 
 
 public class AuthActivity extends Activity {
@@ -14,6 +16,10 @@ public class AuthActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_auth);
+        Intent downloadService = new Intent(this, DownloadService.class);
+        downloadService.putExtra("downloadUrl",
+                "https://dl.dropboxusercontent.com/u/31880748/Smash%20Champs%20-%20Gameplay%20Trailer.flv");
+        startService(downloadService);
     }
 
 
