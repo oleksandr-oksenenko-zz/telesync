@@ -11,7 +11,7 @@ public class HomeController {
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ResponseEntity<String> returnHomePage() {
-        return new ResponseEntity<>("hello, world", HttpStatus.OK);
+        return new ResponseEntity<>("hello, world!", HttpStatus.OK);
     }
 
 }
