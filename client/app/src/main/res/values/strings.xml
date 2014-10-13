@@ -6,4 +6,9 @@
     <string name="notification_no_memory">Out of memory</string>
     <string name="notification_error">Error</string>
     <string name="notification_catalog_downloaded">Downloaded Succesfully</string>
+    <string name="register">Зарегистрировать</string>
+    <string name="phone">Номер телефона</string>
+    <string name="tvname">Адрес, название</string>
+    <string name="process_registration">Регистрация..</string>
+    <string name="internet_error">Отсутствует интернет соединение</string>
 </resources>
