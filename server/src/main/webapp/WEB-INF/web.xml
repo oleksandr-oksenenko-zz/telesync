@@ -15,13 +15,13 @@
         </init-param>
         <init-param>
             <param-name>contextConfigLocation</param-name>
-            <param-value>net.telesync.web.config</param-value>
+            <param-value>net.telesync.config</param-value>
         </init-param>
     </servlet>
 
     <servlet-mapping>
         <servlet-name>dispatcherServlet</servlet-name>
-        <url-pattern>/</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 </web-app>
