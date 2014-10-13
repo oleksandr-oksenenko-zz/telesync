@@ -23,9 +23,8 @@
             </intent-filter>
         </activity>
 
-        <service
-            android:name=".Services.DownloadService"></service>
-
+        <service android:name=".Services.DownloadService" android:enabled="true"/>
+        <service android:name=".Services.UpdateService" android:enabled="true"/>
         <receiver
             android:name=".Receivers.BootReceiver"
             android:enabled="true"
