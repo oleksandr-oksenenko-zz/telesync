@@ -1,4 +1,4 @@
-package net.telesync.web.config;
+package net.telesync.config;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
