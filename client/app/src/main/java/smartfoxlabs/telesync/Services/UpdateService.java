@@ -25,7 +25,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+
+import retrofit.Callback;
 import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import smartfoxlabs.telesync.Activitys.AuthActivity;
 import smartfoxlabs.telesync.R;
 import smartfoxlabs.telesync.Rest.RegRequest;
@@ -69,12 +73,37 @@ public class UpdateService extends IntentService {
         }
     }
 
-    private void updateStatus() {
-        new HeartBeatTask().execute();
-    }
 
     private void scheduleNextUpdate() throws ParseException {
-        updateStatus();
+        //updateStatus();
+        int tvId = -1;
+        Log.d("test","update " + String.valueOf(tvId));
+        if(mPreferences == null)
+            mPreferences =
+                    getSharedPreferences(AuthActivity.APP_PREFERENCES,Context.MODE_PRIVATE);
+        if(mPreferences.contains(AuthActivity.APP_PREFERENCES_ID)) {
+            tvId = mPreferences.getInt(AuthActivity.APP_PREFERENCES_ID, -1);
+        }
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setEndpoint(TeleSyncClient.API_URL)
+                .build();
+        TeleSyncClient.TeleSyncRestApi teleSyncAdapter =
+                restAdapter.create(TeleSyncClient.TeleSyncRestApi.class);
+        Callback tvCallback = new Callback() {
+
+            @Override
+            public void success(Object o, Response response) {
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+            }
+        };
+        teleSyncAdapter.updateStatus(tvId, tvCallback);
+
         Intent intent = new Intent(this, this.getClass());
         PendingIntent pendingIntent =
                 PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -109,45 +138,6 @@ public class UpdateService extends IntentService {
         nextUpdateTimeMillis = System.currentTimeMillis() + 15 * 60 * 1000;
         AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC, nextUpdateTimeMillis, pendingIntent);
-    }
-
-    private class HeartBeatTask extends AsyncTask<Void,Void,Void> {
-
-        int tvId = -1;
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if(mPreferences == null)
-                mPreferences =
-                        getSharedPreferences(AuthActivity.APP_PREFERENCES,Context.MODE_PRIVATE);
-            if(mPreferences.contains(AuthActivity.APP_PREFERENCES_ID)) {
-                tvId = mPreferences.getInt(AuthActivity.APP_PREFERENCES_ID, -1);
-            }
-        }
-
-        @Override
-        protected Void doInBackground(Void... voids) {
-            if (tvId != -1)
-            try {
-                RestAdapter restAdapter = new RestAdapter.Builder()
-                        .setLogLevel(RestAdapter.LogLevel.FULL)
-                        .setEndpoint(TeleSyncClient.API_URL)
-                        .build();
-                TeleSyncClient.TeleSyncRestApi teleSyncAdapter =
-                        restAdapter.create(TeleSyncClient.TeleSyncRestApi.class);
-                teleSyncAdapter.updateStatus(tvId);
-            }
-            catch (Exception e) {
-
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-        }
     }
 
 }

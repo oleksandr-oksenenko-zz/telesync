@@ -1,5 +1,7 @@
 package smartfoxlabs.telesync.Rest;
 
+
+import retrofit.Callback;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
@@ -19,7 +21,7 @@ public class TeleSyncClient {
         TV regTv(@Body RegRequest body);
 
         @GET("/heartbeat/{id}/")
-        void updateStatus(@Path("id") int tvId);
+        void updateStatus(@Path("id") int tvId, Callback<TV> cb);
 
     }
 
