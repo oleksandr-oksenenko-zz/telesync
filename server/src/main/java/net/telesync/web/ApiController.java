@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/api")
@@ -28,4 +29,8 @@ public class ApiController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/devices", method = RequestMethod.GET)
+    public List<DeviceInfo> getAllDevices() {
+        return deviceService.getAll();
+    }
 }
