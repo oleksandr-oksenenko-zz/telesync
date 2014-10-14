@@ -3,8 +3,6 @@ package net.telesync.web;
 import net.telesync.model.DeviceInfo;
 import net.telesync.model.RegisterDeviceRequest;
 import net.telesync.service.DeviceService;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -22,11 +20,11 @@ public class ApiController {
         return deviceService.registerNewDevice(request);
     }
 
-    @RequestMapping(value = "/heartbeat/{id}", method = RequestMethod.GET)
-    public ResponseEntity<String> makeHeartbeat(@PathVariable("id") Long deviceId) {
+    @RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
+    public DeviceInfo getDeviceById(@PathVariable("id") Long deviceId) {
         deviceService.makeHeartbeat(deviceId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return deviceService.getById(deviceId);
     }
 
     @RequestMapping(value = "/devices", method = RequestMethod.GET)

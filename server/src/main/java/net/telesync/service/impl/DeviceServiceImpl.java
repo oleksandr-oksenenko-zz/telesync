@@ -62,6 +62,12 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional
+    public DeviceInfo getById(Long deviceId) {
+        return jdbcTemplate.queryForObject(SELECT_BY_ID_SQL, new Object[]{ deviceId }, new DeviceInfoRowMapper());
+    }
+
+    @Override
+    @Transactional
     public void makeHeartbeat(Long deviceId) {
         int rowsUpdated = jdbcTemplate.update(MAKE_HEARTBEAT_SQL, new Timestamp(DateTime.now().getMillis()), deviceId);
         if (rowsUpdated != 1) {
