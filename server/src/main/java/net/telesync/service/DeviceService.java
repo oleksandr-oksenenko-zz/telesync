@@ -11,4 +11,5 @@ public interface DeviceService {
 
     List<DeviceInfo> getAll();
 
+    void makeHeartbeat(Long deviceId);
 }
