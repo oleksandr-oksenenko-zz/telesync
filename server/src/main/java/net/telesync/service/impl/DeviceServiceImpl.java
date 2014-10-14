@@ -1,5 +1,6 @@
 package net.telesync.service.impl;
 
+import net.telesync.exception.InvalidUpdateException;
 import net.telesync.model.DeviceInfo;
 import net.telesync.model.RegisterDeviceRequest;
 import net.telesync.service.DeviceService;
@@ -21,27 +22,11 @@ import java.util.List;
 @Transactional(readOnly = true)
 public class DeviceServiceImpl implements DeviceService {
 
-    private static final class DeviceInfoRowMapper implements RowMapper<DeviceInfo> {
-
-        @Override
-        public DeviceInfo mapRow(ResultSet resultSet, int i) throws SQLException {
-            Integer id = (Integer) resultSet.getObject("id");
-            String url = resultSet.getString("url");
-            String deviceName = resultSet.getString("device_name");
-            String tvName = resultSet.getString("tv_name");
-            LocalDateTime lastHeartbeat = new LocalDateTime(resultSet.getObject("last_heartbeat"));
-
-            return new DeviceInfo(id, url, deviceName, tvName, lastHeartbeat);
-        }
-    }
-
     private static final String INSERT_SQL = "insert into devices (device_name, tv_name, last_heartbeat) " +
             " values (?, ?, ?)";
-
     private static final String SELECT_BY_ID_SQL = "select * from devices where id = ?";
-
     private static final String SELECT_ALL_SQL = "select * from devices";
-
+    private static final String MAKE_HEARTBEAT_SQL = "update devices set last_heartbeat = ? where id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -66,12 +51,35 @@ public class DeviceServiceImpl implements DeviceService {
         }, keyHolder);
 
         return jdbcTemplate.queryForObject(SELECT_BY_ID_SQL,
-                new Object[] { keyHolder.getKey() },
+                new Object[]{ keyHolder.getKey() },
                 new DeviceInfoRowMapper());
     }
 
     @Override
     public List<DeviceInfo> getAll() {
         return jdbcTemplate.query(SELECT_ALL_SQL, new DeviceInfoRowMapper());
+    }
+
+    @Override
+    @Transactional
+    public void makeHeartbeat(Long deviceId) {
+        int rowsUpdated = jdbcTemplate.update(MAKE_HEARTBEAT_SQL, new Timestamp(DateTime.now().getMillis()), deviceId);
+        if (rowsUpdated != 1) {
+            throw new InvalidUpdateException("Update failed with rowsUpdated = " + rowsUpdated);
+        }
+    }
+
+    private static final class DeviceInfoRowMapper implements RowMapper<DeviceInfo> {
+
+        @Override
+        public DeviceInfo mapRow(ResultSet resultSet, int i) throws SQLException {
+            Integer id = (Integer) resultSet.getObject("id");
+            String url = resultSet.getString("url");
+            String deviceName = resultSet.getString("device_name");
+            String tvName = resultSet.getString("tv_name");
+            LocalDateTime lastHeartbeat = new LocalDateTime(resultSet.getObject("last_heartbeat"));
+
+            return new DeviceInfo(id, url, deviceName, tvName, lastHeartbeat);
+        }
     }
 }
