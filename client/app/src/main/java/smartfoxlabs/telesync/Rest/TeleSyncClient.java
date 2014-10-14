@@ -11,15 +11,16 @@ import retrofit.http.Query;
  */
 public class TeleSyncClient {
 
-    public static final String API_URL = "http://telesync-crew4ok.rhcloud.com";
+    public static final String API_URL = "http://telesync-crew4ok.rhcloud.com/api";
 
     public interface TeleSyncRestApi {
 
-        @POST("/api/register/")
+        @POST("/register/")
         TV regTv(@Body RegRequest body);
 
-        @POST("/status/{id}/")
+        @GET("/heartbeat/{id}/")
         void updateStatus(@Path("id") int tvId);
+
     }
 
 

@@ -36,7 +36,7 @@ public class DownloadService extends Service {
     String downloadUrl;
     public static boolean serviceState = false;
     public static String fileName = "advertisement.avi";
-
+    int delay = 1 * 1000;
     // Handler that receives messages from the thread
     private final class ServiceHandler extends Handler {
         public ServiceHandler(Looper looper) {
@@ -170,13 +170,21 @@ public class DownloadService extends Service {
                 f.write(buffer, 0, len1);
             }
             f.close();
+            delay = 1 * 1000;
             //File from = new File(root.getAbsolutePath() + "/" + fileName);
             //File to = new File(root.getAbsolutePath() + "/" + "some.pdf");
 
 
         } catch (Exception e) {
             Log.d("Downloader", e.getMessage());
-
+            delay *= 2;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    downloadFile();
+                }
+            },delay);
         }
     }
 }
