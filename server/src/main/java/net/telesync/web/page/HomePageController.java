@@ -11,9 +11,6 @@ import javax.annotation.Resource;
 @RequestMapping("/")
 public class HomePageController {
 
-    @Resource
-    private DeviceService deviceService;
-
     @RequestMapping(method = RequestMethod.GET)
     public String showHomePage() {
         return "index";

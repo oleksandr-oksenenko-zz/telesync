@@ -27,6 +27,8 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String SELECT_BY_ID_SQL = "select * from devices where id = ?";
     private static final String SELECT_ALL_SQL = "select * from devices";
     private static final String MAKE_HEARTBEAT_SQL = "update devices set last_heartbeat = ? where id = ?";
+    private static final String UPDATE_URL = "update devices set url = ? where id = ?";
+    private static final String DELETE_DEVICE = "delete from devices where id = ?";
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -62,16 +64,34 @@ public class DeviceServiceImpl implements DeviceService {
 
     @Override
     @Transactional
-    public DeviceInfo getById(Long deviceId) {
+    public DeviceInfo getById(Integer deviceId) {
         return jdbcTemplate.queryForObject(SELECT_BY_ID_SQL, new Object[]{ deviceId }, new DeviceInfoRowMapper());
     }
 
     @Override
     @Transactional
-    public void makeHeartbeat(Long deviceId) {
+    public void makeHeartbeat(Integer deviceId) {
         int rowsUpdated = jdbcTemplate.update(MAKE_HEARTBEAT_SQL, new Timestamp(DateTime.now().getMillis()), deviceId);
         if (rowsUpdated != 1) {
             throw new InvalidUpdateException("Update failed with rowsUpdated = " + rowsUpdated);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void updateDeviceUrl(Integer deviceId, DeviceInfo deviceInfo) {
+        int rowsUpdated = jdbcTemplate.update(UPDATE_URL, deviceInfo.getDeviceUrl(), deviceId);
+        if (rowsUpdated != 1) {
+            throw new InvalidUpdateException("Update failed with rowsUpdated = " + rowsUpdated);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void removeDevice(Integer deviceId) {
+        int rowsDeleted = jdbcTemplate.update(DELETE_DEVICE, deviceId);
+        if (rowsDeleted != 1) {
+            throw new InvalidUpdateException("Delete failed with rowsDeleted = " + rowsDeleted);
         }
     }
 

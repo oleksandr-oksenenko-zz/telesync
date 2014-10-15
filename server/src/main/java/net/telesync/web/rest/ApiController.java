@@ -21,10 +21,24 @@ public class ApiController {
     }
 
     @RequestMapping(value = "/devices/{id}", method = RequestMethod.GET)
-    public DeviceInfo getDeviceById(@PathVariable("id") Long deviceId) {
+    public DeviceInfo getDeviceById(@PathVariable("id") Integer deviceId) {
         deviceService.makeHeartbeat(deviceId);
 
         return deviceService.getById(deviceId);
+    }
+
+    @RequestMapping(value = "/devices/{id}", method = RequestMethod.PUT)
+    public void updateDeviceUrl(@PathVariable("id") Integer deviceId,
+                                @RequestBody DeviceInfo deviceInfo) {
+        if (!deviceId.equals(deviceInfo.getId())) {
+            throw new IllegalArgumentException("Ids are not equal");
+        }
+        deviceService.updateDeviceUrl(deviceId, deviceInfo);
+    }
+
+    @RequestMapping(value = "/devices/{id}", method = RequestMethod.DELETE)
+    public void removeDevice(@PathVariable("id") Integer deviceId) {
+        deviceService.removeDevice(deviceId);
     }
 
     @RequestMapping(value = "/devices", method = RequestMethod.GET)

@@ -14,61 +14,123 @@ require([
         "backbone",
         "underscore",
         "moment",
-        "text!../tpl/deviceTemplate.html" ],
+        "text!../tpl/device.tpl"
+    ],
     function ($, Backbone, _, moment, DeviceTemplate) {
-        var DeviceModel = Backbone.Model.extend({});
+        _.helpers = {
+            convertJodaToJs: function(dateTimeArray) {
+                var date = new Date(
+                    dateTimeArray[0],
+                    dateTimeArray[1],
+                    dateTimeArray[2],
+                    dateTimeArray[3],
+                    dateTimeArray[4],
+                    dateTimeArray[5],
+                    dateTimeArray[6]
+                );
 
-        var DeviceListModel = Backbone.Collection.extend({
-            model: DeviceModel,
+                return moment(date).format("DD.MM.YYYY hh:mm:ss");
+            }
+        };
+
+        var Device = Backbone.Model.extend({
+            changeUrl: function (url) {
+                this.save({ deviceUrl: url });
+            }
+        });
+
+        var Devices = Backbone.Collection.extend({
 
             url: "/api/devices",
+
+            model: Device,
 
             initialize: function () {
                 this.fetch();
             }
         });
 
-        var DeviceListView = Backbone.View.extend({
+        var DeviceView = Backbone.View.extend({
+            tagName: "tr",
+
+            template: _.template(DeviceTemplate),
+
+            events: {
+                "click button.btn-change-url": "changeUrl",
+                "click button.btn-save-url": "saveUrl",
+                "click button.btn-remove-device": "removeDevice"
+            },
+
             initialize: function () {
-                this.template = _.template(DeviceTemplate);
-                _.helpers = {
-                    convertJodaToJs: function(dateTimeArray) {
-                        var date = new Date(
-                            dateTimeArray[0],
-                            dateTimeArray[1],
-                            dateTimeArray[2],
-                            dateTimeArray[3],
-                            dateTimeArray[4],
-                            dateTimeArray[5],
-                            dateTimeArray[6]
-                        );
+                this.listenTo(this.model, "change", this.render);
+                this.listenTo(this.model, "destroy", this.removeSelf)
+            },
 
-                        return moment(date).format("DD.MM.YYYY hh:mm:ss");
-                    }
-                };
+            changeUrl: function () {
+                var urlValue = this.url.text();
+                this.urlInput.val(urlValue);
 
-                this.collection.bind("sync", this.render, this);
-                this.collection.bind("reset", this.render, this);
+                // hide
+                this.url.addClass("hidden");
+                this.changeBtn.addClass("hidden");
+
+                // show
+                this.urlInput.removeClass("hidden");
+                this.saveBtn.removeClass("hidden");
+            },
+
+            saveUrl: function () {
+                // save
+                var urlValue = this.urlInput.val();
+                this.model.changeUrl(urlValue);
+
+                // hide
+                this.urlInput.addClass("hidden");
+                this.saveBtn.addClass("hidden");
+
+                // show
+                this.url.removeClass("hidden");
+                this.changeBtn.removeClass("hidden");
+            },
+
+            removeDevice: function () {
+                this.model.destroy();
+            },
+
+            removeSelf: function () {
+                this.remove();
             },
 
             render: function () {
-                var data = _.extend({ collection: this.collection.toJSON() }, this.convertJodaToJs);
-                var renderedContent = this.template(data);
-                this.$el.children("tbody").html(renderedContent);
+                $(this.el).html(this.template(this.model.toJSON()));
+                this.url = this.$(".url");
+                this.urlInput = this.$(".url-input");
+                this.changeBtn = this.$(".btn-change-url");
+                this.saveBtn = this.$(".btn-save-url");
+
                 return this;
             }
         });
 
-        $(document).ready(function () {
-            var deviceList = new DeviceListModel();
-            var deviceListView = new DeviceListView({
-                el: $("#deviceTable"),
-                collection: deviceList
-            });
+        var DevicesView = Backbone.View.extend({
+            el: $("#deviceTable"),
 
-            setInterval(function () {
-                deviceList.fetch({ })
-            }, 5000);
+            initialize: function () {
+                this.listenTo(this.collection, "sync", this.render);
+            },
+
+            render: function () {
+                this.collection.each(function (device) {
+                    var deviceView = new DeviceView({ model: device });
+                    this.$el.append(deviceView.render().el);
+                }, this);
+            }
+
+        });
+
+        $(document).ready(function () {
+            var devices = new Devices;
+            var devicesView = new DevicesView({ collection: devices });
         });
     }
 );

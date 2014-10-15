@@ -6,19 +6,19 @@ import org.joda.time.LocalDateTime;
 
 public class DeviceInfo {
     private final Integer id;
-    private final String url;
+    private final String deviceUrl;
     private final String deviceName;
     private final String tvName;
     private final LocalDateTime lastHeartbeat;
 
     @JsonCreator
-    public DeviceInfo(@JsonProperty("deviceId") Integer id,
-                      @JsonProperty("deviceUrl") String url,
+    public DeviceInfo(@JsonProperty("id") Integer id,
+                      @JsonProperty("deviceUrl") String deviceUrl,
                       @JsonProperty("deviceName") String deviceName,
                       @JsonProperty("tvName") String tvName,
                       @JsonProperty("lastHeartbeat") LocalDateTime lastHeartbeat) {
         this.id = id;
-        this.url = url;
+        this.deviceUrl = deviceUrl;
         this.deviceName = deviceName;
         this.tvName = tvName;
         this.lastHeartbeat = lastHeartbeat;
@@ -28,8 +28,8 @@ public class DeviceInfo {
         return id;
     }
 
-    public String getUrl() {
-        return url;
+    public String getDeviceUrl() {
+        return deviceUrl;
     }
 
     public LocalDateTime getLastHeartbeat() {

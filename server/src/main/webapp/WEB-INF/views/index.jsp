@@ -13,22 +13,25 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="page-header">
-            <h1>Device manager</h1>
-        </div>
+        <div class="col-md-offset-1 col-md-10">
+            <div class="page-header">
+                <h1>Device manager</h1>
+            </div>
 
-        <table class="table" id="deviceTable">
-            <thead>
-            <tr>
-                <th>Id</th>
-                <th>Device name</th>
-                <th>Tv name</th>
-                <th>Url</th>
-                <th>Last heartbeat</th>
-            </tr>
-            </thead>
-            <tbody></tbody>
-        </table>
+            <table class="table" id="deviceTable">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Device name</th>
+                    <th>Tv name</th>
+                    <th>Url</th>
+                    <th>Last heartbeat</th>
+                    <th>#</th>
+                </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
     </div>
 </div>
 

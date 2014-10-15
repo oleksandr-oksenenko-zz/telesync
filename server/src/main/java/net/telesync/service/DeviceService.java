@@ -11,7 +11,11 @@ public interface DeviceService {
 
     List<DeviceInfo> getAll();
 
-    DeviceInfo getById(Long deviceId);
+    DeviceInfo getById(Integer deviceId);
 
-    void makeHeartbeat(Long deviceId);
+    void makeHeartbeat(Integer deviceId);
+
+    void updateDeviceUrl(Integer deviceId, DeviceInfo deviceInfo);
+
+    void removeDevice(Integer deviceId);
 }
