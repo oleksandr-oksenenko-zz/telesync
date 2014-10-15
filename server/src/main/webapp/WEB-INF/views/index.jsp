@@ -33,8 +33,5 @@
 </div>
 
 <script data-main="${ctx}/js/app" src="${ctx}/js/3p/require.js"></script>
-<script>
-    define("App", { name: 'devices'});
-</script>
 </body>
 </html>
