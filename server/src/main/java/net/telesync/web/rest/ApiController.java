@@ -1,4 +1,4 @@
-package net.telesync.web;
+package net.telesync.web.rest;
 
 import net.telesync.model.DeviceInfo;
 import net.telesync.model.RegisterDeviceRequest;

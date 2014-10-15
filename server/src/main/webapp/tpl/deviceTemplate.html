@@ -1,0 +1,9 @@
+<% _.each(collection, function (model) { %>
+        <tr>
+            <td><%= model.id %></td>
+            <td><%= model.deviceName %></td>
+            <td><%= model.tvName %></td>
+            <td><%= model.url ? model.url : "None"  %></td>
+            <td><%= _.helpers.convertJodaToJs(model.lastHeartbeat) %></td>
+        </tr>
+<% }); %>
