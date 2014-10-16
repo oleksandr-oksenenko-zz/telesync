@@ -5,6 +5,7 @@ import net.telesync.model.DeviceInfo;
 import net.telesync.model.RegisterDeviceRequest;
 import net.telesync.service.DeviceService;
 import org.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -48,7 +49,7 @@ public class DeviceServiceImpl implements DeviceService {
                 PreparedStatement ps = connection.prepareStatement(INSERT_SQL);
                 ps.setString(1, request.getDeviceName());
                 ps.setString(2, request.getTvName());
-                ps.setTimestamp(3, new Timestamp(DateTime.now().getMillis()));
+                ps.setTimestamp(3, new Timestamp(DateTime.now(DateTimeZone.UTC).getMillis()));
 
                 return ps;
             }
@@ -73,7 +74,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     @Transactional
     public void makeHeartbeat(Integer deviceId) {
-        int rowsUpdated = jdbcTemplate.update(MAKE_HEARTBEAT_SQL, new Timestamp(DateTime.now().getMillis()), deviceId);
+        int rowsUpdated = jdbcTemplate.update(MAKE_HEARTBEAT_SQL, new Timestamp(DateTime.now(DateTimeZone.UTC).getMillis()), deviceId);
         if (rowsUpdated != 1) {
             throw new InvalidUpdateException("Update failed with rowsUpdated = " + rowsUpdated);
         }
@@ -100,7 +101,7 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public List<DeviceInfo> findOutdatedDevices(long seconds) {
         return jdbcTemplate.query(GET_OUTDATED_DEVICES, new Object[]{
-                LocalDateTime.now().toDate(),
+                DateTime.now(DateTimeZone.UTC).getMillis(),
                 seconds
         }, new DeviceInfoRowMapper());
     }
