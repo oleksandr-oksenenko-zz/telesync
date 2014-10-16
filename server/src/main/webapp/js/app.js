@@ -18,10 +18,10 @@ require([
     ],
     function ($, Backbone, _, moment, DeviceTemplate) {
         _.helpers = {
-            convertJodaToJs: function(dateTimeArray) {
+            convertJodaToJs: function (dateTimeArray) {
                 var date = new Date(
                     dateTimeArray[0],
-                    dateTimeArray[1],
+                        dateTimeArray[1] - 1,
                     dateTimeArray[2],
                     dateTimeArray[3],
                     dateTimeArray[4],
@@ -29,7 +29,8 @@ require([
                     dateTimeArray[6]
                 );
 
-                return moment(date).format("DD.MM.YYYY hh:mm:ss");
+                var nowInUtc = moment().utc();
+                return moment.utc(date).from(nowInUtc);
             }
         };
 
