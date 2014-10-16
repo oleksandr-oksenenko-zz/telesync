@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.*;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Service
 @Transactional(readOnly = true)
@@ -30,7 +31,7 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String MAKE_HEARTBEAT_SQL = "update devices set last_heartbeat = ? where id = ?";
     private static final String UPDATE_URL = "update devices set url = ? where id = ?";
     private static final String DELETE_DEVICE = "delete from devices where id = ?";
-    private static final String GET_OUTDATED_DEVICES = "select * from devices where (? - last_heartbeat) > ? * 1000 ";
+    private static final String GET_OUTDATED_DEVICES = "select * from devices where (? - last_heartbeat) > ?";
 
     private final JdbcTemplate jdbcTemplate;
 
@@ -102,7 +103,7 @@ public class DeviceServiceImpl implements DeviceService {
     public List<DeviceInfo> findOutdatedDevices(long seconds) {
         return jdbcTemplate.query(GET_OUTDATED_DEVICES, new Object[]{
                 DateTime.now(DateTimeZone.UTC).getMillis(),
-                seconds
+                TimeUnit.SECONDS.toMillis(seconds)
         }, new DeviceInfoRowMapper());
     }
 

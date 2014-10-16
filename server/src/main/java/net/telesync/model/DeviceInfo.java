@@ -43,4 +43,37 @@ public class DeviceInfo {
     public String getTvName() {
         return tvName;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DeviceInfo that = (DeviceInfo) o;
+
+        if (deviceName != null ? !deviceName.equals(that.deviceName) : that.deviceName != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (tvName != null ? !tvName.equals(that.tvName) : that.tvName != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (deviceName != null ? deviceName.hashCode() : 0);
+        result = 31 * result + (tvName != null ? tvName.hashCode() : 0);
+        return result;
+    }
+
+    @Override
+    public String toString() {
+        return "DeviceInfo{" +
+                "id=" + id +
+                ", deviceUrl='" + deviceUrl + '\'' +
+                ", deviceName='" + deviceName + '\'' +
+                ", tvName='" + tvName + '\'' +
+                ", lastHeartbeat=" + lastHeartbeat +
+                '}';
+    }
 }
