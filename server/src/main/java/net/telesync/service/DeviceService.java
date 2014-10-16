@@ -18,4 +18,6 @@ public interface DeviceService {
     void updateDeviceUrl(Integer deviceId, DeviceInfo deviceInfo);
 
     void removeDevice(Integer deviceId);
+
+    List<DeviceInfo> findOutdatedDevices(long seconds);
 }

@@ -37,8 +37,12 @@ public class ServiceConfig {
         InputStream schemaStream = getClass().getResourceAsStream("/db/init_schema.sql");
         String schema = IOUtils.toString(schemaStream);
 
+        String[] queries = schema.split(";\n");
+
         JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource());
-        jdbcTemplate.execute(schema);
+        for (String query : queries) {
+            jdbcTemplate.execute(query);
+        }
 
         return jdbcTemplate;
     }

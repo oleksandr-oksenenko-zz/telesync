@@ -29,6 +29,8 @@ public class DeviceServiceImpl implements DeviceService {
     private static final String MAKE_HEARTBEAT_SQL = "update devices set last_heartbeat = ? where id = ?";
     private static final String UPDATE_URL = "update devices set url = ? where id = ?";
     private static final String DELETE_DEVICE = "delete from devices where id = ?";
+    private static final String GET_OUTDATED_DEVICES = "select * from devices where (? - last_heartbeat) > ? * 1000 ";
+
     private final JdbcTemplate jdbcTemplate;
 
     @Autowired
@@ -93,6 +95,14 @@ public class DeviceServiceImpl implements DeviceService {
         if (rowsDeleted != 1) {
             throw new InvalidUpdateException("Delete failed with rowsDeleted = " + rowsDeleted);
         }
+    }
+
+    @Override
+    public List<DeviceInfo> findOutdatedDevices(long seconds) {
+        return jdbcTemplate.query(GET_OUTDATED_DEVICES, new Object[]{
+                LocalDateTime.now().toDate(),
+                seconds
+        }, new DeviceInfoRowMapper());
     }
 
     private static final class DeviceInfoRowMapper implements RowMapper<DeviceInfo> {
