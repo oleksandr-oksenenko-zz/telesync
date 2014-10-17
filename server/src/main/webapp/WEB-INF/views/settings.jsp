@@ -9,7 +9,7 @@
 <head>
     <title>Device manager</title>
 
-    <link rel="stylesheet" href="${ctx}/css/3p/bootstrap.css">
+    <link rel="stylesheet" href="${ctx}/css/3p/bootstrap.min.css">
 </head>
 <body>
 <div class="container">
