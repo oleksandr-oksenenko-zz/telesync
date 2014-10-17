@@ -4,5 +4,5 @@ public interface MailConfigService {
 
     String getMailAddress();
 
-    void saveNewMailAddress(String newMailAddress);
+    void updateMailAddress(String newMailAddress);
 }

@@ -5,6 +5,7 @@ import net.telesync.service.MailConfigService;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.util.HtmlUtils;
 
 import javax.annotation.Resource;
 
@@ -26,8 +27,8 @@ public class MailConfigServiceImpl implements MailConfigService {
 
     @Override
     @Transactional
-    public void saveNewMailAddress(String newMailAddress) {
-        int rowsUpdated = jdbcTemplate.update(UPDATE_MAIL_ADDRESS_SQL);
+    public void updateMailAddress(String newMailAddress) {
+        int rowsUpdated = jdbcTemplate.update(UPDATE_MAIL_ADDRESS_SQL, HtmlUtils.htmlEscape(newMailAddress));
         if (rowsUpdated != 1) {
             throw new InvalidUpdateException("Update failed with rowsUpdated = " + rowsUpdated);
         }

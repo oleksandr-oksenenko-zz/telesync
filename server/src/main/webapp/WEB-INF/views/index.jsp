@@ -16,6 +16,18 @@
         <div class="col-md-offset-1 col-md-10">
             <div class="page-header">
                 <h1>Device manager</h1>
+
+                <c:if test="${not isEmailSet}">
+                    <div class="alert alert-danger">
+                        <h3>Please set the mail address on the settings page.</h3>
+                    </div>
+                </c:if>
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="${ctx}/">Devices</a></li>
+                    <li><a href="${ctx}/settings">Settings</a></li>
+                </ul>
+
             </div>
 
             <table class="table" id="deviceTable">

@@ -1,5 +1,6 @@
 package net.telesync.service.impl;
 
+import net.telesync.exception.MailAddressIsNotSetException;
 import net.telesync.model.DeviceInfo;
 import net.telesync.service.MailConfigService;
 import net.telesync.service.MailService;
@@ -28,9 +29,9 @@ public class MailServiceImpl implements MailService {
     private static final String MESSAGE_TEMPLATE = "Devices %s are not responding";
     private final Configuration config;
     private final Form postData;
+
     @Resource
     private MailConfigService mailConfigService;
-    private String email = "crew4ok@gmail.com";
 
     public MailServiceImpl() {
         HttpAuthenticationFeature httpAuth = HttpAuthenticationFeature.basic("api", API_SECRET_KEY);
@@ -45,6 +46,9 @@ public class MailServiceImpl implements MailService {
     @Override
     public Response sendAlertMessage(List<DeviceInfo> devices) {
         String mailAddress = mailConfigService.getMailAddress();
+        if (mailAddress == null || mailAddress.isEmpty()) {
+            throw new MailAddressIsNotSetException();
+        }
 
         StringBuilder messageText = new StringBuilder();
         for (int i = 0; i < devices.size(); i++) {

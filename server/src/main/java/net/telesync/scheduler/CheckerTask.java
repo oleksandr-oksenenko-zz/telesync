@@ -36,13 +36,13 @@ public final class CheckerTask implements Runnable {
 
                 devices.removeAll(outdatedDevices);
 
-                outdatedDevices.addAll(devicesCopy);
-                outdatedDevices.retainAll(devicesCopy);
-
                 if (!devices.isEmpty()) {
                     LOG.warn("There are outdated devices: {}", devices);
                     mailService.sendAlertMessage(devices);
                 }
+
+                outdatedDevices.addAll(devicesCopy);
+                outdatedDevices.retainAll(devicesCopy);
             }
         } catch (Exception e) {
             LOG.error("Exception occurred while checking for outdated devices.", e);
