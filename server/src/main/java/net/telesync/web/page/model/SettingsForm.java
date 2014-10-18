@@ -5,8 +5,8 @@ import javax.validation.constraints.Pattern;
 
 public class SettingsForm {
 
-    @NotNull(message = "Mail address cannot be empty.")
-    @Pattern(regexp = ".*@.*", message = "Email format is not correct.")
+    @NotNull(message = "Адрес не может быть пустым.")
+    @Pattern(regexp = ".*@.*", message = "Формат указанного адреса неверен.")
     private String emailAddress;
 
     public SettingsForm() {

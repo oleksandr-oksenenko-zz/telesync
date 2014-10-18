@@ -6,7 +6,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Device manager</title>
+    <title>Менеджер устройств</title>
 
     <link rel="stylesheet" href="${ctx}/css/3p/bootstrap.min.css">
 </head>
@@ -15,17 +15,17 @@
     <div class="row">
         <div class="col-md-offset-1 col-md-10">
             <div class="page-header">
-                <h1>Device manager</h1>
+                <h1>Менеджер устройств</h1>
 
                 <c:if test="${not isEmailSet}">
                     <div class="alert alert-danger">
-                        <h3>Please set the mail address on the settings page.</h3>
+                        <h3>Необходима установка адреса почты. Вы можете сделать это на странице настроек.</h3>
                     </div>
                 </c:if>
 
                 <ul class="nav nav-tabs">
-                    <li class="active"><a href="${ctx}/">Devices</a></li>
-                    <li><a href="${ctx}/settings">Settings</a></li>
+                    <li class="active"><a href="${ctx}/">Устройста</a></li>
+                    <li><a href="${ctx}/settings">Настройки</a></li>
                 </ul>
 
             </div>
@@ -33,11 +33,11 @@
             <table class="table" id="deviceTable">
                 <thead>
                 <tr>
-                    <th>Id</th>
-                    <th>Device name</th>
-                    <th>Tv name</th>
-                    <th>Url</th>
-                    <th>Last heartbeat</th>
+                    <th>Номер</th>
+                    <th>Имя устройства</th>
+                    <th>Имя ТВ</th>
+                    <th>Ссылка</th>
+                    <th>Время получения последнего запроса</th>
                     <th>#</th>
                 </tr>
                 </thead>
