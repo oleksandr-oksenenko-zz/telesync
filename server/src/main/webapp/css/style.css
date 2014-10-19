@@ -1,0 +1,12 @@
+.device-url {
+    max-width: 400px;
+}
+
+.url {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.buttons {
+    white-space: nowrap;
+}
