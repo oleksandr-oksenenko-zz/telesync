@@ -70,7 +70,7 @@ require([
             },
 
             changeUrl: function () {
-                var urlValue = this.url.text();
+                var urlValue = $.trim(this.url.text());
                 this.urlInput.val(urlValue);
 
                 // hide
