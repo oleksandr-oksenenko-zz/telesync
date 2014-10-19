@@ -14,14 +14,16 @@ require([
         "backbone",
         "underscore",
         "moment",
-        "text!../tpl/device.tpl"
+        "text!../tpl/device.html"
     ],
     function ($, Backbone, _, moment, DeviceTemplate) {
+        moment.locale("ru");
+
         _.helpers = {
             convertJodaToJs: function (dateTimeArray) {
                 var date = new Date(
                     dateTimeArray[0],
-                        dateTimeArray[1] - 1,
+                    dateTimeArray[1] - 1,
                     dateTimeArray[2],
                     dateTimeArray[3],
                     dateTimeArray[4],
