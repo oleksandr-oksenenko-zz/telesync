@@ -31,7 +31,7 @@
 
             </div>
 
-            <table class="table" id="deviceTable"">
+            <table class="table" id="deviceTable">
                 <thead>
                 <tr>
                     <th>Номер</th>
